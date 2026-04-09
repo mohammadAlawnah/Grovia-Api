@@ -7,9 +7,9 @@ import {
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
-import { JWTPayloadType } from 'src/utils/types';
+import { JWTPayloadType } from '../utils/types';
 import { UpdateUserDto } from './dtos/update-users.dto';
-import { userType } from 'src/utils/enums';
+import { userType } from '../utils/enums';
 import { AuthService } from './auth.provider';
 
 @Injectable()

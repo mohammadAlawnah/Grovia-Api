@@ -8,12 +8,12 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserService } from 'src/users/user.service';
+import { UserService } from '../users/user.service';
 import { Review } from './review.entity';
 import { Repository } from 'typeorm';
 import { CreateReviewDto } from './dtos/create-review.dto';
 import { UpdateRevieoDto } from './dtos/update-review.dto';
-import { userType } from 'src/utils/enums';
+import { userType } from '../utils/enums';
 
 @Injectable()
 export class ReviewService {

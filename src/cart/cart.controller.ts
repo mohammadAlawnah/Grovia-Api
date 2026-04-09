@@ -1,10 +1,10 @@
-import { Roles } from 'src/users/decorators/user-role.decorator';
+import { Roles } from '../users/decorators/user-role.decorator';
 import { CartService } from './cart.service';
 import { Controller, Param, ParseIntPipe, Post, UseGuards } from '@nestjs/common';
-import { userType } from 'src/utils/enums';
-import { AuthRolesGuard } from 'src/users/guards/auth-roles.guard';
-import { CurrentUser } from 'src/users/decorators/current-user.decorator';
-import type { JWTPayloadType } from 'src/utils/types';
+import { userType } from '../utils/enums';
+import { AuthRolesGuard } from '../users/guards/auth-roles.guard';
+import { CurrentUser } from '../users/decorators/current-user.decorator';
+import type { JWTPayloadType } from '../utils/types';
 
 @Controller('api/cart')
 export class CartController {

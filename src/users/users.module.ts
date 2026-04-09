@@ -7,7 +7,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import type { StringValue } from 'ms';
 import { AuthService } from './auth.provider';
-import { MailModule } from 'src/mail/mail.module';
+import { MailModule } from '../mail/mail.module';
 @Module({
     controllers:[UserController],
     providers : [UserService,AuthService],

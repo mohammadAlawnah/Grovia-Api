@@ -18,10 +18,10 @@ import { CreateProductDto } from './dtos/create-product-dto';
 import { UpdateProductDto } from './dtos/update-product.dto';
 import { ProductService } from './products.service';
 import { ConfigService } from '@nestjs/config';
-import { Roles } from 'src/users/decorators/user-role.decorator';
-import { userType } from 'src/utils/enums';
-import { CurrentUser } from 'src/users/decorators/current-user.decorator';
-import type  { JWTPayloadType } from 'src/utils/types';
+import { Roles } from '../users/decorators/user-role.decorator';
+import { userType } from '../utils/enums';
+import { CurrentUser } from '../users/decorators/current-user.decorator';
+import type  { JWTPayloadType } from '../utils/types';
 
 @Controller('/api/products')
 export class ProductsController {

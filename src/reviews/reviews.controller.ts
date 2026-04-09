@@ -1,12 +1,12 @@
 import { AuthGuard } from './../users/guards/auth.guard';
 import { Body, Controller, Get, Param, ParseIntPipe, Post, Put, Query, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ReviewService } from './reviews.service';
-import { UserService } from 'src/users/user.service';
-import { Roles } from 'src/users/decorators/user-role.decorator';
-import { userType } from 'src/utils/enums';
+import { UserService } from '../users/user.service';
+import { Roles } from '../users/decorators/user-role.decorator';
+import { userType } from '../utils/enums';
 import { CreateReviewDto } from './dtos/create-review.dto';
-import { CurrentUser } from 'src/users/decorators/current-user.decorator';
-import type { JWTPayloadType } from 'src/utils/types';
+import { CurrentUser } from '../users/decorators/current-user.decorator';
+import type { JWTPayloadType } from '../utils/types';
 import { UpdateRevieoDto } from './dtos/update-review.dto';
 import type { Express } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';

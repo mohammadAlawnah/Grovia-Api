@@ -1,6 +1,6 @@
-import { Product } from 'src/products/product.entity';
-import { Review } from 'src/reviews/review.entity';
-import { CURRENT_TIMESTAMP } from 'src/utils/constants';
+import { Product } from '../products/product.entity';
+import { Review } from '../reviews/review.entity';
+import { CURRENT_TIMESTAMP } from '../utils/constants';
 import {
   Column,
   CreateDateColumn,
@@ -11,9 +11,9 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { userType } from 'src/utils/enums';
+import { userType } from '../utils/enums';
 import { Exclude } from 'class-transformer';
-import { Cart } from 'src/cart/cart.entity';
+import { Cart } from '../cart/cart.entity';
 
 @Entity({ name: 'users' })
 export class User {

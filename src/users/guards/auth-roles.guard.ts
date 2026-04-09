@@ -1,4 +1,4 @@
-import { UserService } from 'src/users/user.service';
+import { UserService } from '../users/user.service';
 import {
   CanActivate,
   ExecutionContext,
@@ -8,10 +8,10 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-import { JWTPayloadType } from 'src/utils/types';
+import { JWTPayloadType } from '../utils/types';
 
 import { Reflector } from '@nestjs/core';
-import { userType } from 'src/utils/enums';
+import { userType } from '../utils/enums';
 @Injectable()
 export class AuthRolesGuard implements CanActivate {
   constructor(

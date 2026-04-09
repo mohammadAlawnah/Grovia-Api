@@ -1,4 +1,4 @@
-import { ReviewService } from 'src/reviews/reviews.service';
+import { ReviewService } from '../reviews/reviews.service';
 import { UserService } from './user.service';
 import {
   Body,
@@ -18,9 +18,9 @@ import { LoginDto } from './dtos/login.dto';
 import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from './guards/auth.guard';
 import { CurrentUser } from './decorators/current-user.decorator';
-import type { JWTPayloadType } from 'src/utils/types';
+import type { JWTPayloadType } from '../utils/types';
 import { Roles } from './decorators/user-role.decorator';
-import { userType } from 'src/utils/enums';
+import { userType } from '../utils/enums';
 import { AuthRolesGuard } from './guards/auth-roles.guard';
 import { UpdateUserDto } from './dtos/update-users.dto';
 import { AuthService } from './auth.provider';

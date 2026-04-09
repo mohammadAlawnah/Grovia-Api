@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ProductsController } from './products.controller';
 import { ProductService } from './products.service';
-import { UsersModule } from 'src/users/users.module';
+import { UsersModule } from '../users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Product } from './product.entity';
 import { JwtModule } from '@nestjs/jwt';
-import { Category } from 'src/category/category.entity';
+import { Category } from '../category/category.entity';
 
 @Module({
   controllers: [ProductsController],
