@@ -45,11 +45,12 @@ export class ProductsController {
   public getAllProduccts(
     @Query("title") title:string,
     @Query("minPrice") minPrice:string,
-    @Query("maxPrice") maxPrice:string
+    @Query("maxPrice") maxPrice:string,
+    @Query("category") category:string
 
   ) {
 
-    return this.productsService.getAllProduccts(title,minPrice,maxPrice);
+    return this.productsService.getAllProduccts(title,minPrice,maxPrice,category);
   }
 
   @Get(':id')
@@ -71,4 +72,12 @@ export class ProductsController {
   public deleteProduct(@Param('id', ParseIntPipe) id: number) {
     return this.productsService.deleteProduct(id);
   }
+
+  @Get("category/:category")
+  public getProductCategory(@Param('category') categoryName:string){
+    // console.log(categoryName)
+    return this.productsService.getProductByCategory(categoryName);
+  }
+
+  // @Get("")
 }

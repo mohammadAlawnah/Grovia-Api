@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Category } from "./category.entity";
@@ -15,6 +15,14 @@ export class CategoryService{
             relations: ['products'],
         });
         return{message:"succsess",category:category}
+    }
+
+    public async getCategory(categoryName :string){
+        const category = await this.categoryRepository.findOne({where:{name : categoryName}});
+        if(!category)
+            throw new NotFoundException("CategoryNotFound")
+
+        return {message:"success",category:category}
     }
 
 

@@ -5,6 +5,7 @@ import { UpdateProductDto } from './dtos/update-product.dto';
 import { Between, Like, Repository } from 'typeorm';
 import { Product } from './product.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CategoryService } from 'src/category/category.service';
 
 @Injectable()
 export class ProductService {
@@ -12,6 +13,7 @@ export class ProductService {
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
     private readonly userService: UserService,
+    private readonly categoryService : CategoryService,
   ) {}
 
   /**
@@ -31,16 +33,33 @@ export class ProductService {
     return await this.productRepository.save(newProduct);
   }
 
-  public getAllProduccts(title?: string, minPrice?: string, maxPrice?: string) {
+  public getAllProduccts(title?: string, minPrice?: string, maxPrice?: string,category?:string) {
+
 
     const fillter = {
       ...(title ? {title:Like(`%${title.toLocaleLowerCase()}%`)} : {}),
-      ...(minPrice && maxPrice? {price: Between(Number(minPrice), Number(maxPrice))} : {})
+      ...(minPrice && maxPrice? {price: Between(Number(minPrice), Number(maxPrice))} : {}),
+      
     }
 
     return this.productRepository.find({
       where: fillter,
     });
+  }
+
+  public async getProductByCategory(category : string){
+
+    const mycategory = await this.categoryService.getCategory(category)
+
+    if(!mycategory){
+      throw new NotFoundException("Category Not Found");
+    }
+
+    const products = await this.productRepository.find({where : {category:mycategory.category}})
+
+    return {message : "success", products:products}
+    
+
   }
 
   

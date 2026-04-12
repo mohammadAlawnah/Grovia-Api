@@ -19,8 +19,14 @@ export class Product {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: '150' })
+  @Column({ type: 'varchar', length: 150 })
   title: string;
+
+  @Column()
+  quantity : number;
+
+  @Column({ type: 'varchar', length: 150 })
+  unit : string;
 
   @Column()
   description: string;

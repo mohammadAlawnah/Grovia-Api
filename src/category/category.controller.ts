@@ -1,5 +1,5 @@
 import { CategoryService } from './category.service';
-import { Controller, Get } from "@nestjs/common";
+import { Controller, Get, Param } from "@nestjs/common";
 
 @Controller('/api/category')
 export class CategoryController{
@@ -11,6 +11,12 @@ export class CategoryController{
     @Get()
     public getAllCategory(){
         return this.categoryService.getAllCategory();
+    }
+
+    @Get(":categoryName")
+    public getCategory(@Param("categoryName") categoryName:string){
+        return this.categoryService.getCategory(categoryName);
+
     }
 
 }

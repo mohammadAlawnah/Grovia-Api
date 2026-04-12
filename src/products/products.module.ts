@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Product } from './product.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { Category } from '../category/category.entity';
+import { CategoryModule } from 'src/category/category.module';
 
 @Module({
   controllers: [ProductsController],
@@ -14,6 +15,7 @@ import { Category } from '../category/category.entity';
     UsersModule,
     TypeOrmModule.forFeature([Product, Category]),
     JwtModule,
+    CategoryModule,
   ],
   exports: [ProductService],
 })
