@@ -85,7 +85,7 @@ export class CartService {
 
 
   }
-  public async getUserCart(userId: number) {
+public async getUserCart(userId: number) {
   const user = await this.userService.getCurrentUser(userId);
 
   if (!user) throw new NotFoundException('User Not Found');
@@ -97,7 +97,7 @@ export class CartService {
     relations: ['items', 'items.product'],
   });
 
-  if (!cart) {
+  if (!cart || cart.items.length === 0) {
     return {
       message: 'Cart is empty',
       items: [],
