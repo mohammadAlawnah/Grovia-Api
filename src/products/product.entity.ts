@@ -58,6 +58,42 @@ export class Product {
 
   @OneToMany(() => CartItem, (cartItem) => cartItem.product)
   cartItems: CartItem[];
+
+  @Column({ type: 'varchar', length: 100, nullable: true })
+brand: string;
+
+@Column({ type: 'boolean', default: true })
+isActive: boolean;
+
+@Column({ type: 'int', default: 0 })
+stockQuantity: number;
+
+@Column({ type: 'int', nullable: true })
+calories: number;
+
+@Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
+protein: number;
+
+@Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
+carbs: number;
+
+@Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
+fat: number;
+
+@Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
+sugar: number;
+
+@Column({ type: 'boolean', default: false })
+isVegan: boolean;
+
+@Column({ type: 'boolean', default: false })
+isSugarFree: boolean;
+
+@Column({ type: 'boolean', default: false })
+isLowCalorie: boolean;
+
+@Column('text', { array: true, nullable: true })
+tags: string[];
 }
 
 // ()=> Review, (review)=>review.product

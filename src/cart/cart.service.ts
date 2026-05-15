@@ -85,4 +85,34 @@ export class CartService {
 
 
   }
+  public async getUserCart(userId: number) {
+  const user = await this.userService.getCurrentUser(userId);
+
+  if (!user) throw new NotFoundException('User Not Found');
+
+  const cart = await this.cartRepository.findOne({
+    where: {
+      user: { id: user.id },
+    },
+    relations: ['items', 'items.product'],
+  });
+
+  if (!cart) {
+    return {
+      message: 'Cart is empty',
+      items: [],
+      totalPrice: 0,
+    };
+  }
+
+  const totalPrice = cart.items.reduce((total, item) => {
+    return total + Number(item.price);
+  }, 0);
+
+  return {
+    message: 'success',
+    items: cart.items,
+    totalPrice,
+  };
+}
 }

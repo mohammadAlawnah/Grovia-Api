@@ -15,6 +15,7 @@ import { Category } from './category/category.entity';
 import { dataSourceOptions } from '../DB/data-source';
 import { CartModule } from './cart/cart.module';
 import { AppController } from './app.controller';
+import { AiAgentModule } from './ai-agent/ai-agent.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { AppController } from './app.controller';
     MailModule,
     ReviewModule,
     CartModule,
+    AiAgentModule,
     TypeOrmModule.forRoot(dataSourceOptions),
     ConfigModule.forRoot({
       isGlobal: true,

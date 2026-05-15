@@ -92,4 +92,129 @@ export class ProductService {
 
     return { message: 'product deleted successfully' };
   }
+
+  public async findProductByTitle(title: string) {
+    const product = await this.productRepository.findOne({
+      where: {
+        title: Like(`%${title.toLowerCase()}%`),
+      },
+    });
+
+    return product;
+  }
+
+  public async getProductsForAi() {
+    const products = await this.productRepository.find({
+      select: {
+        id: true,
+        title: true,
+        price: true,
+      },
+    });
+
+    return products;
+  }
+  public async findMatchingProducts(title: string) {
+    const normalized = title.toLowerCase().trim();
+    const singular = normalized.endsWith('s')
+      ? normalized.slice(0, -1)
+      : normalized;
+
+    const products = await this.productRepository.find();
+
+    const exactMatch = products.find(
+      (product) => product.title.toLowerCase() === normalized,
+    );
+
+    if (exactMatch) {
+      return { type: 'exact', products: [exactMatch] };
+    }
+
+    const singularMatch = products.find(
+      (product) => product.title.toLowerCase() === singular,
+    );
+
+    if (singularMatch) {
+      return { type: 'exact', products: [singularMatch] };
+    }
+
+    const containsMatches = products.filter((product) =>
+      product.title.toLowerCase().includes(singular),
+    );
+
+    if (containsMatches.length === 1) {
+      return { type: 'exact', products: containsMatches };
+    }
+
+    if (containsMatches.length > 1) {
+      return { type: 'multiple', products: containsMatches };
+    }
+
+    return { type: 'none', products: [] };
+  }
+
+ public async searchProductsForAi(filters: {
+  category?: string;
+  tags?: string[];
+  maxPrice?: number;
+  minPrice?: number;
+  isLowCalorie?: boolean;
+  isVegan?: boolean;
+  isSugarFree?: boolean;
+}) {
+  const products = await this.productRepository.find({
+    relations: ['category'],
+  });
+
+  let results = products.filter((product) => product.isActive);
+
+  if (filters.category) {
+    const categoryLower = filters.category.toLowerCase();
+
+    results = results.filter(
+      (product) =>
+        product.category?.name?.toLowerCase().includes(categoryLower) ||
+        product.title.toLowerCase().includes(categoryLower) ||
+        product.description.toLowerCase().includes(categoryLower),
+    );
+  }
+
+  if (typeof filters.minPrice === 'number') {
+    results = results.filter(
+      (product) => Number(product.price) >= filters.minPrice!,
+    );
+  }
+
+  if (typeof filters.maxPrice === 'number') {
+    results = results.filter(
+      (product) => Number(product.price) <= filters.maxPrice!,
+    );
+  }
+
+  if (filters.isLowCalorie === true) {
+    results = results.filter((product) => product.isLowCalorie === true);
+  }
+
+  if (filters.isVegan === true) {
+    results = results.filter((product) => product.isVegan === true);
+  }
+
+  if (filters.isSugarFree === true) {
+    results = results.filter((product) => product.isSugarFree === true);
+  }
+
+  if (filters.tags && filters.tags.length > 0) {
+    results = results.filter((product) => {
+      if (!product.tags || product.tags.length === 0) return false;
+
+      const productTags = product.tags.map((tag) => tag.toLowerCase());
+
+      return filters.tags!.some((tag) =>
+        productTags.includes(tag.toLowerCase()),
+      );
+    });
+  }
+
+  return results;
+}
 }
