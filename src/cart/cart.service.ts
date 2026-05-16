@@ -116,6 +116,7 @@ public async getUserCart(userId: number) {
   };
 }
 
+
 public async removeFromCart(userId: number, productId: number) {
   const user = await this.userService.getCurrentUser(userId);
 
@@ -140,18 +141,8 @@ public async removeFromCart(userId: number, productId: number) {
     throw new NotFoundException('Product not found in cart');
   }
 
-  // اذا الكمية اكثر من 1 بنقص وحدة
-  if (cartItem.quantity > 1) {
-    cartItem.quantity -= 1;
+  await this.cartItemRepository.remove(cartItem);
 
-    cartItem.price =
-      Number(cartItem.quantity) * Number(cartItem.product.price);
-
-    await this.cartItemRepository.save(cartItem);
-  } else {
-    // اذا الكمية 1 بحذف العنصر كامل
-    await this.cartItemRepository.remove(cartItem);
-  }
 
   const updatedCart = await this.cartRepository.findOne({
     where: {
