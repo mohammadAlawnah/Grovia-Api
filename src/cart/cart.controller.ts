@@ -1,5 +1,6 @@
 import {
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -32,5 +33,15 @@ export class CartController {
   @Get()
   public async getUserCart(@CurrentUser() payload: JWTPayloadType) {
     return await this.cartService.getUserCart(payload.id);
+  }
+
+  @Roles(userType.NORMAL_USER, userType.ADMIN)
+  @UseGuards(AuthRolesGuard)
+  @Delete('/:id')
+  public async removeProduct(
+    @CurrentUser() payload: JWTPayloadType,
+    @Param('id', ParseIntPipe) productId: number,
+  ) {
+    return await this.cartService.removeFromCart(payload.id, productId);
   }
 }

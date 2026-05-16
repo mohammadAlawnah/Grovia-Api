@@ -115,4 +115,62 @@ public async getUserCart(userId: number) {
     totalPrice,
   };
 }
+
+public async removeFromCart(userId: number, productId: number) {
+  const user = await this.userService.getCurrentUser(userId);
+
+  if (!user) throw new NotFoundException('User Not Found');
+
+  const cart = await this.cartRepository.findOne({
+    where: {
+      user: { id: user.id },
+    },
+    relations: ['items', 'items.product'],
+  });
+
+  if (!cart) {
+    throw new NotFoundException('Cart Not Found');
+  }
+
+  const cartItem = cart.items.find(
+    (item) => item.product.id === productId,
+  );
+
+  if (!cartItem) {
+    throw new NotFoundException('Product not found in cart');
+  }
+
+  // اذا الكمية اكثر من 1 بنقص وحدة
+  if (cartItem.quantity > 1) {
+    cartItem.quantity -= 1;
+
+    cartItem.price =
+      Number(cartItem.quantity) * Number(cartItem.product.price);
+
+    await this.cartItemRepository.save(cartItem);
+  } else {
+    // اذا الكمية 1 بحذف العنصر كامل
+    await this.cartItemRepository.remove(cartItem);
+  }
+
+  const updatedCart = await this.cartRepository.findOne({
+    where: {
+      id: cart.id,
+    },
+    relations: ['items', 'items.product'],
+  });
+
+  const totalPrice =
+    updatedCart?.items.reduce((total, item) => {
+      return total + Number(item.price);
+    }, 0) || 0;
+
+  return {
+    message: 'Product removed from cart',
+    items: updatedCart?.items || [],
+    totalPrice,
+  };
+}
+
+
 }
