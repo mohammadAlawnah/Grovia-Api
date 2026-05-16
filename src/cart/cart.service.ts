@@ -163,5 +163,57 @@ public async removeFromCart(userId: number, productId: number) {
   };
 }
 
+public async increaseQuantity(userId: number, productId: number) {
+  return await this.addToCart(userId, productId);
+}
+public async decreaseQuantity(userId: number, productId: number) {
+  const user = await this.userService.getCurrentUser(userId);
+
+  if (!user) throw new NotFoundException('User Not Found');
+
+  const cart = await this.cartRepository.findOne({
+    where: {
+      user: { id: user.id },
+    },
+    relations: ['items', 'items.product'],
+  });
+
+  if (!cart) throw new NotFoundException('Cart Not Found');
+
+  const cartItem = cart.items.find(
+    (item) => item.product.id === productId,
+  );
+
+  if (!cartItem) {
+    throw new NotFoundException('Product not found in cart');
+  }
+
+  if (cartItem.quantity > 1) {
+    cartItem.quantity -= 1;
+    cartItem.price =
+      Number(cartItem.quantity) * Number(cartItem.product.price);
+
+    await this.cartItemRepository.save(cartItem);
+  } else {
+    await this.cartItemRepository.remove(cartItem);
+  }
+
+  const updatedCart = await this.cartRepository.findOne({
+    where: { id: cart.id },
+    relations: ['items', 'items.product'],
+  });
+
+  const totalPrice =
+    updatedCart?.items.reduce((total, item) => {
+      return total + Number(item.price);
+    }, 0) || 0;
+
+  return {
+    message: 'Quantity decreased',
+    items: updatedCart?.items || [],
+    totalPrice,
+  };
+}
+
 
 }

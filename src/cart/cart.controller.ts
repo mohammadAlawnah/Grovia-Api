@@ -44,4 +44,24 @@ export class CartController {
   ) {
     return await this.cartService.removeFromCart(payload.id, productId);
   }
+
+  @Roles(userType.NORMAL_USER, userType.ADMIN)
+@UseGuards(AuthRolesGuard)
+@Post('/increase/:id')
+public async increaseQuantity(
+  @CurrentUser() payload: JWTPayloadType,
+  @Param('id', ParseIntPipe) productId: number,
+) {
+  return await this.cartService.increaseQuantity(payload.id, productId);
+}
+
+@Roles(userType.NORMAL_USER, userType.ADMIN)
+@UseGuards(AuthRolesGuard)
+@Post('/decrease/:id')
+public async decreaseQuantity(
+  @CurrentUser() payload: JWTPayloadType,
+  @Param('id', ParseIntPipe) productId: number,
+) {
+  return await this.cartService.decreaseQuantity(payload.id, productId);
+}
 }
